@@ -1,0 +1,150 @@
+<p-toast></p-toast>
+
+<p-dialog [(visible)]="showAddRecipe" [modal]="true" [style]="{width:'50vw','max-width':'550px'}" [draggable]="true" [resizable]="false">
+
+  <ng-template pTemplate="header">
+    <dialog-header icon="building" title="Add Recipe Content" (onClose)="showAddRecipe=false"></dialog-header>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <form (ngSubmit)="addRecipe()" [formGroup]="form">
+      <div class="formgrid grid">
+        <!-- recipe -->
+        <div class="field col-6">
+          <form-select
+            formControlName="recipe"
+            label="Recipe"
+            picklist="Recipe"
+            (changed)="onRecipe($event)">
+          </form-select>
+          <val-errors controlName="recipe" label="The recipe"></val-errors>
+        </div>
+        <!-- quantity -->
+        <div class="field col-6">
+          <form-number
+            formControlName="quantity"
+            label="Quantity"
+            decimals="2"
+            units="Units">
+          </form-number>
+        </div>
+        <val-errors controlName="quantity" label="The quantity"></val-errors>
+      </div>
+
+      <div class="formgrid grid mb-3">
+        <!-- destination -->
+        <div class="field col-12 md:col-6 lg:col-4 mt-3">
+          <form-barcode
+            name="dst"
+            formControlName="destination"
+            label="Destination"
+            prompt="Destination container barcode"
+            (keyup.enter)="onDestination($event.target.value)">
+          </form-barcode>
+          <!-- <val-errors controlName="destination" label="The destination"></val-errors> -->
+          <val-errors controlName="destination">
+            <ng-template valError="barcodeLength">
+              <small style="color: red;">{{ label || 'This' }} barcode is the wrong length</small>
+            </ng-template>
+            <ng-template valError="required">
+              <small style="color: orange;">REQUIRED</small>
+            </ng-template>
+          </val-errors>
+        </div>
+      </div>
+
+      <div class="field col-12">{{ recipeForm.get('quantity')?.errors | json }}</div>
+
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <dialog-footer [form]="recipeForm" acceptText="SUBMIT" (onReject)="showAddRecipe=false" (onAccept)="addRecipe()"></dialog-footer>
+  </ng-template>
+
+</p-dialog>
+
+<div class="flex flex-column">
+
+  <div class="card">
+    <form (ngSubmit)="addReagent()" [formGroup]="form">
+
+      <div class="formgrid grid">
+        <!-- destination -->
+        <div class="field col-12 md:col-6 lg:col-4">
+          <form-barcode focus
+            formControlName="destination"
+            next="quantity"
+            label="Destination"
+            minlength="6">
+          </form-barcode>
+          <val-errors controlName="destination" label="The barcode"></val-errors>
+        </div>
+      </div>
+
+      <!-- recipe -->
+      <div class="formgrid grid">
+        <div class="field col-12 md:col-6 lg:col-4">
+          <form-select
+            formControlName="recipe"
+            label="Recipe"
+            picklist="Recipe">
+          </form-select>
+        </div>
+        <val-errors controlName="recipe" label="The recipe"></val-errors>
+
+        <!-- quantity -->
+        <div class="field col-12 md:col-6 lg:col-4">
+          <form-number
+            formControlName="quantity"
+            label="Quantity"
+            decimals="2"
+            required="true"
+            units="Units">
+          </form-number>
+          <val-errors controlName="quantity" label="The quantity"></val-errors>
+        </div>
+      </div>
+
+      <!-- sample
+      <div class="formgrid grid">
+        <div class="field col-12 md:col-6 lg:col-4">
+          <form-record
+            formControlName="sample"
+            label="Sample"
+            table="Samples"
+            valueProp="name"
+            (changed)="onSample($event)">
+          </form-record>
+        </div>
+
+        <div class="field col-12 md:col-6 lg:col-4">
+          <form-number
+            formControlName="sampleQuantity"
+            label="Quantity"
+            decimals="2"
+            units="Units">
+          </form-number>
+        </div>
+      </div> -->
+      <p-button label="Add to Worklist" class="mt-4" icon="pi pi-sort-down" iconPos="right" (click)="addReagent()" [disabled]="form.invalid"></p-button>
+
+    </form>
+
+    <div class="pt-2 text-dark">{{ form.value | json }}</div>
+  </div>
+
+  <div class="card p-0">
+    <tbl [value]="aliquots" [cols]="cols"></tbl>
+    <div *ngIf="aliquots?.length" class="flex mt-2 mb-2">
+      <button pButton type="button" label="Clear" class="p-button-outlined p-button-secondary ml-auto mr-2" (click)="cancel()"></button>
+      <p-button label="Submit" class="mr-2" (click)="create()"></p-button>
+    </div>
+  </div>
+
+  <p>Form value: {{ form.value | json }}</p>
+  <p>Form status: {{ form.status | json }}</p>
+  <div *ngFor="let error of errors">
+    {{ error.control }}: {{ error.key }} = {{ error.errorValue }}
+  </div>
+</div>

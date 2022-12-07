@@ -1,0 +1,124 @@
+<p-toast></p-toast>
+
+<p-dialog header="Header" [(visible)]="displayModal" [modal]="true" [style]="{width:'50vw','max-width':'600px'}" [draggable]="true" [resizable]="false">
+
+  <ng-template pTemplate="header">
+    <dialog-header icon="pencil" [title]="taskText()" (close)="displayModal=false"></dialog-header>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="formgrid grid">
+
+      <div class="field col-12 md:col-6 mt-2">
+        <form-text
+          label="Name"
+          [(ngModel)]="model.name">
+        </form-text>
+      </div>
+
+      <div class="field col-12 md:col-6 mt-2">
+        <form-select
+          label="Location Type"
+          [(ngModel)]="model.locationType"
+          picklist="LocationType">
+        </form-select>
+      </div>
+
+      <div class="field col-12 md:col-6 mt-2">
+        <form-text
+          label="Layout"
+          [(ngModel)]="model.layout">
+        </form-text>
+      </div>
+
+      <div class="field col-12 md:col-6 mt-2">
+        <form-text
+          label="Description"
+          [(ngModel)]="model.description">
+        </form-text>
+      </div>
+
+      <div class="field col-12 md:col-6 mt-2">
+        <p-checkbox name="fixed" binary=false [falseValue]=0 [trueValue]=1 label="Fixed" [(ngModel)]="model.isFixed"></p-checkbox>
+      </div>
+
+      <div class="field col-12 md:col-6 mt-2">
+        <p-checkbox name="enabled" binary=false [falseValue]=0 [trueValue]=1 label="Enabled" [(ngModel)]="model.isEnabled"></p-checkbox>
+      </div>
+
+    </div>
+    <changed-info [model]="model"></changed-info>
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <dialog-footer (reject)="displayModal=false" (accept)="submit()"></dialog-footer>
+  </ng-template>
+</p-dialog>
+
+<p-contextMenu #cm [model]="items"></p-contextMenu>
+
+<p-treeTable #tt [value]="tree" [columns]="cols"
+  selectionMode="single"
+  dataKey="name"
+  (onContextMenuSelect)="setContextMenu($event.node)"
+  [(contextMenuSelection)]="selectedNode"
+  (onNodeExpand)="nodeExpand($event.node)"
+  (onNodeCollapse)="nodeCollapse($event.node)"
+  [contextMenu]="cm"
+  [autoLayout]="true"
+  styleClass="p-treetable-sm">
+
+  <ng-template pTemplate="caption">
+
+    <div class="flex align-items-center">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input #search type="text" [showClear]="true" pInputText size="20" placeholder="Search" (mouseup)="$event.target.select()" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </span>
+
+      <button pButton pRipple type="button" [label]="rotateText"
+        [icon]="rotateIcon" (click)="rotateState()" class="ml-2 p-button-text p-button-secondary p-button-sm"></button>
+      <button pButton pRipple type="button" label="L2" (click)="level2()" class="ml-2 p-button-text p-button-secondary p-button-sm"></button>
+      <!-- <button pButton pRipple type="button" icon="pi pi-angle-double-up" label="Collapse" (click)="collapseAll()" class="ml-2 p-button-text p-button-secondary
+        p-button-sm"></button> -->
+      <button *ngIf="scoped" pButton pRipple type="button" icon="pi pi-arrow-up" label="Top" (click)="unScope()" class="ml-2 p-button-text p-button-secondary p-button-sm"></button>
+      <button pButton pRipple type="button" icon="pi pi-plus" class="ml-auto p-button-rounded" pTooltip="New Location" tooltipPosition="left"
+        (click)="addLocation(1)"></button>
+    </div>
+
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" [style.width.px]="col.wd">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+    <tr [ttContextMenuRow]="rowNode" [ttRow]="rowNode">
+      <td *ngFor="let col of columns; let i=index" [style.width.px]="col.wd">
+        <container-element [ngSwitch]="col.field">
+          <ng-container *ngSwitchCase="'name'">
+            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i===0"></p-treeTableToggler>
+            {{ rowData['name'] }}
+          </ng-container>
+          <span *ngSwitchCase="'locationType'">{{ picklists.name[rowData.locationType] }}</span>
+          <i *ngSwitchCase="'isFixed'" [ngClass]="{'pi pi-check':rowData['isFixed']}"></i>
+          <i *ngSwitchCase="'isEnabled'" [ngClass]="{'pi pi-check':rowData['isEnabled']}"></i>
+          <i *ngSwitchCase="'noteId'" class="pi pi-tags" (click)="editNotes(rowNode.node)"></i>
+          <span *ngSwitchDefault>{{ rowData[col.field] }}</span>
+        </container-element>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td [attr.colspan]="cols.length">No locations to display</td>
+    </tr>
+  </ng-template>
+
+</p-treeTable>

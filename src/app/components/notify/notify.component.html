@@ -1,0 +1,29 @@
+<dialog-header [icon]="options.icon" [title]="options.title" [class.mt-8]="!options.msg" (onClose)="ref.close(null)"></dialog-header>
+
+<div class="overflow-y-auto" [ngClass]="options.json?'p-2':'p-4'" (click)="options.msg && accept()">
+
+  <div *ngIf="options.text" [ngClass]="options.msg?'text-center':'mb-4'">
+    <div [innerHTML]='options.text'></div>
+  </div>
+
+  <div *ngIf="options.controls" class="mb-2">
+    <dynamic-form [controls]="options.controls" [model]="model" (formValid)="setValid($event)"></dynamic-form>
+    <div>VALID: {{ valid }}-{{ count }}</div>
+  </div>
+
+  <div *ngIf="options.json">
+    <!-- <pre prism [code]="options.json" language="html"></pre> -->
+    <pre class="m-0" [innerHTML]="options.json"></pre>
+  </div>
+
+  <div *ngIf="options.prompt" class="grid field">
+    <label *ngIf="options.prompt" for="prompt" class="my-0 mx-3 p-1">{{ options.prompt }}</label>
+    <input id="prompt" type="text" pInputText placeholder="options.placeholder" [(ngModel)]="options.value">
+  </div>
+
+</div>
+
+<div *ngIf="options.rejectText || options.acceptText" class="flex justify-content-end align-items-center p-2 shadow-1">
+  <button *ngIf="options.rejectText" pButton pRipple type="button" class="p-button-text mr-2" [label]="options.rejectText" (click)="ref.close(null)"></button>
+  <p-button *ngIf="options.acceptText" [label]="options.acceptText" [disabled]="!valid" (click)="accept()"></p-button>
+</div>

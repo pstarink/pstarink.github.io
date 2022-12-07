@@ -1,0 +1,3 @@
+-   Dynamic form select
+
+    -   Allow array of strings to be the options. Return 0 for no selection, number options 1, ...

@@ -3,10 +3,10 @@
         <a #menubutton tabindex="0" class="menu-button p-trigger" (click)="onMenuButtonClick()">
             <i class="pi pi-chevron-left"></i>
         </a>
-        <img class="horizontal-logo" [routerLink]="['/']" [src]="'assets/layout/images/logo-'+ logo + '.svg'" alt="diamond-layout"/>
+        <img class="horizontal-logo" [routerLink]="['/']" [src]="'assets/layout/images/pyramid-'+ logo + '.png'" alt="pyramid"/>
         <span class="topbar-separator"></span>
         <app-breadcrumb></app-breadcrumb>
-        <img class="mobile-logo" [src]="'assets/layout/images/logo-'+ logo + '.svg'" alt="diamond-layout"/>
+        <img class="mobile-logo" [src]="'assets/layout/images/pyramid-'+ logo + '.png'" alt="pyramid"/>
     </div>
 
     <app-sidebar></app-sidebar>
@@ -96,7 +96,7 @@
                                 <span class="font-semibold">Inbox</span>
                             </span>
                         </a>
-                        <a pRipple class="flex p-2 border-round align-items-center hover:surface-hover transition-colors transition-duration-150 cursor-pointer">
+                        <a pRipple (click)="biz.logout()" class="flex p-2 border-round align-items-center hover:surface-hover transition-colors transition-duration-150 cursor-pointer">
                             <i class="pi pi-power-off mr-3"></i>
                             <span class="flex flex-column">
                                 <span class="font-semibold">Logout</span>

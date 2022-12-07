@@ -1,0 +1,74 @@
+<p-toast></p-toast>
+
+<div class="flex flex-column">
+
+  <div class="card">
+    <form (ngSubmit)="addItems()" [formGroup]="form">
+
+      <div class="formgrid grid">
+        <!-- recipe -->
+        <div class="field col-12 md:col-6 lg:col-4">
+          <form-select
+            formControlName="recipe"
+            label="Recipe"
+            prompt="Consumable recipe"
+            picklist="Recipe"
+            (changed)="onRecipe($event)">
+          </form-select>
+        </div>
+
+        <!-- quantity -->
+        <div class="field col-12 md:col-6 lg:col-4">
+          <form-number
+            formControlName="quantity"
+            label="Quantity"
+            prompt="Quantity to initialize"
+            decimals="2"
+            units="Units">
+          </form-number>
+        </div>
+      </div>
+
+      <div class="formgrid grid mb-3">
+        <!-- destination -->
+        <div class="field col-12 md:col-6 lg:col-4 mt-3">
+          <form-barcode
+            name="dst"
+            formControlName="destination"
+            label="Destination"
+            prompt="Destination container barcode"
+            (keyup.enter)="onDestination($event.target.value)">
+          </form-barcode>
+          <!-- <val-errors controlName="destination" label="The destination"></val-errors> -->
+          <val-errors controlName="destination">
+            <ng-template valError="barcodeLength">
+              <small style="color: red;">{{ label || 'This' }} barcode is the wrong length</small>
+            </ng-template>
+            <ng-template valError="required">
+              <small style="color: orange;">REQUIRED</small>
+            </ng-template>
+          </val-errors>
+        </div>
+      </div>
+
+      <p-button label="Add to Worklist" class="mt-4" icon="pi pi-sort-down" iconPos="right" (click)="addItems()" [disabled]="form.invalid"></p-button>
+
+    </form>
+
+    <div class="pt-2 text-dark">{{ form.value | json }}</div>
+  </div>
+
+  <div class="card p-0">
+    <tbl [value]="aliquots" [cols]="cols"></tbl>
+    <div *ngIf="aliquots?.length" class="flex mt-2 mb-2">
+      <button pButton type="button" label="Clear" class="p-button-outlined p-button-secondary ml-auto mr-2" (click)="cancel()"></button>
+      <p-button label="Submit" class="mr-2" (click)="create()"></p-button>
+    </div>
+  </div>
+
+  <p>Form value: {{ form.value | json }}</p>
+  <p>Form status: {{ form.status | json }}</p>
+  <div *ngFor="let error of errors">
+    {{ error.control }}: {{ error.key }} = {{ error.errorValue }}
+  </div>
+</div>

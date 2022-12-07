@@ -1,0 +1,174 @@
+<!-- browse database table -->
+<p-dialog [(visible)]="browse" [modal]="true" [style]="{width:'100vw',height:'100vh','margin':'60px'}" [draggable]="false" [resizable]="false">
+  <ng-template pTemplate="header">
+    <dialog-header icon="building" [title]="'Browse'" (onClose)="browse=false"></dialog-header>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <p-table [columns]="cols" [value]="value"
+      selectionMode="single" [(selection)]="row"
+      (onRowSelect)="selectFk(row)">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">{{ col.header }}</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns">
+            {{ rowData[col.field] }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <div *ngIf="value?.length===0" class="empty">
+      NO DATA
+    </div>
+
+  </ng-template>
+</p-dialog>
+
+<div [formGroup]="dynForm" class="formgrid grid">
+
+  <ng-container *ngFor="let control of controls">
+
+    <!-- input: text | password | email | search | url -->
+    <div *ngIf="isInput(control.type)" class="field col-12">
+      <label [for]="control.key">{{ control.name }}</label>
+      <span [class.p-input-icon-left]="control.icon" class="w-full">
+        <i *ngIf="control.icon" class="pi pi-{{control.icon}}"></i>
+        <input [id]="control.key"
+          pInputText
+          [formControlName]="control.key"
+          [placeholder]="control.placeholder || ''"
+          [type]="control.type"
+          class="w-full">
+      </span>
+      <val-errors [controlName]="control.key" [label]="makeLabel(control.key)"></val-errors>
+    </div>
+
+    <!-- textarea -->
+    <div *ngIf="control.type === 'textarea'" class="field col-12">
+      <label [for]="control.key">{{ control.name }}</label>
+      <textarea [id]="control.key"
+        pInputTextarea
+        [rows]="control.rows || 3"
+        [placeholder]="control.placeholder || ''"
+        style="min-width:100%;max-width:100%"
+        [formControlName]="control.key"
+        [value]="control.value"></textarea>
+      <val-errors [controlName]="control.key" [label]="makeLabel(control.key)"></val-errors>
+    </div>
+
+    <!-- checkbox -->
+    <div *ngIf="control.type==='checkbox'" class="field col-12">
+      <p-checkbox [id]="control.key"
+        binary=false
+        [falseValue]=0
+        [trueValue]=1
+        [label]="control.name"
+        [formControlName]="control.key"
+        [value]="control.value">
+      </p-checkbox>
+      <val-errors [controlName]="control.key" [label]="makeLabel(control.key)"></val-errors>
+    </div>
+
+    <!-- select -->
+    <div *ngIf="control.type==='select'" class="field col-12">
+      <label [for]="control.key">{{ control.name }}{{ control.cascade ? '(v)' : '' }}</label>
+      <ng-container *ngIf="control.multi; else single">
+        <!-- multi dropdown | not now -->
+        <p-multiSelect
+          inputId="[control.key]"
+          [formControlName]="control.key"
+          [options]="control.options"
+          optionLabel="name"
+          optionValue="id"
+          display="chip"
+          styleClass="w-full"
+          [showHeader]="false"
+          [showClear]="true"
+          appendTo="body">
+        </p-multiSelect>
+      </ng-container>
+      <ng-template #single>
+        <ng-container *ngIf="control.cascade; else dropdown">
+          <p-cascadeSelect
+            [inputId]="control.key"
+            [formControlName]="control.key"
+            [options]="control.options"
+            optionLabel="name"
+            optionValue="id"
+            optionGroupLabel="name"
+            [optionGroupChildren]="['options']"
+            appendTo="body"
+            styleClass="w-full">
+          </p-cascadeSelect>
+          <!-- <small id="v-cascade-help">{{ prompt }}</small> -->
+        </ng-container>
+        <ng-template #dropdown>
+          <p-dropdown
+            [inputId]="control.key"
+            [formControlName]="control.key"
+            [options]="control.options"
+            optionLabel="name"
+            optionValue="id"
+            [autoDisplayFirst]="false"
+            appendTo="body"
+            styleClass="w-full">
+          </p-dropdown>
+          <!-- <small id="v-picklist-help">{{ prompt }}</small> -->
+        </ng-template>
+      </ng-template>
+    </div>
+
+    <!-- fk browse -->
+    <div *ngIf="control.type==='fk'" class="field col-12">
+      <label [for]="control.key">{{ control.name }}</label>
+      <span class="p-input-icon-right w-full">
+        <i class="pi pi-chevron-circle-right cursor-pointer" (click)="selectRow(control)"></i>
+        <input [id]="control.key" pInputText type="text"
+          [formControlName]="control.key"
+          class="w-full">
+      </span>
+    </div>
+
+    <!-- number -->
+    <div *ngIf="control.type==='number'" class="field col-12 w-full">
+      <label [for]="control.key">{{ control.name }}</label>
+      <p-inputNumber [inputId]="control.key"
+        [formControlName]="control.key"
+        [showButtons]="control.decimals===0"
+        [useGrouping]="false"
+        [placeholder]="control.placeholder"
+        mode="decimal"
+        [maxFractionDigits]="control.decimals || 0"
+        class="w-full"
+        styleClass="w-full">
+      </p-inputNumber>
+      <val-errors [controlName]="control.key" [label]="makeLabel(control.key)"></val-errors>
+    </div>
+
+    <!-- date -->
+    <div *ngIf="control.type==='date'" class="field col-12">
+      <label [for]="control.key">{{ control.name }}</label>
+      <p-calendar [inputId]="control.key"
+        [formControlName]="control.key"
+        appendTo="body"
+        [placeholder]="control.placeholder"
+        [selectionMode]="control.dateMode"
+        [showTime]="control.showTime"
+        [showSeconds]="control.showTime && control.showSeconds"
+        styleClass="w-full">
+      </p-calendar>
+      <val-errors [controlName]="control.key" [label]="makeLabel(control.key)"></val-errors>
+    </div>
+
+  </ng-container>
+</div>
+
+<div class="card p-1">
+  <pre [innerHTML]="sanitizer.bypassSecurityTrustHtml(paint(this.model))"></pre>
+</div>

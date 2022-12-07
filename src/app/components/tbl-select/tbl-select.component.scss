@@ -1,0 +1,41 @@
+$ht: 32px;
+$border: rgba(#000, 0.1);
+table {
+  border-collapse: collapse;
+  border-bottom: 1px solid $border;
+  width: 100%;
+}
+th {
+  height: $ht !important;
+  text-transform: uppercase;
+  background-color: var(--surface-100) !important;
+  font-size: 12px;
+}
+tr {
+  height: $ht !important;
+}
+td,
+th {
+  padding: 0 8px !important;
+  text-align: left;
+  border-bottom: 1px solid $border;
+  white-space: nowrap;
+}
+td {
+  font-size: 14px;
+}
+
+.empty {
+  text-align: center;
+  padding: 16px;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.warning {
+  color: darkorange;
+}
+
+.wd-icon {
+  width: 30px !important;
+}

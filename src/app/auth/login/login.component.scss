@@ -1,0 +1,24 @@
+.error {
+    // @apply text-red-700;
+    color: darkred;
+}
+
+.frosted {
+    background-color: rgba(250, 250, 250, 0.25);
+    backdrop-filter: blur(5px);
+}
+
+// https://philiprogers.com/svgpatterns/#honeycomb
+.bg-pattern {
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiPgo8cmVjdCB3aWR0aD0iNTYiIGhlaWdodD0iMTAwIiBmaWxsPSIjZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0yOCA2NkwwIDUwTDAgMTZMMjggMEw1NiAxNkw1NiA1MEwyOCA2NkwyOCAxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZjNmOSIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+CjxwYXRoIGQ9Ik0yOCAwTDI4IDM0TDAgNTBMMCA4NEwyOCAxMDBMNTYgODRMNTYgNTBMMjggMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZWNmMyIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+Cjwvc3ZnPg==");
+}
+
+i {
+    opacity: 0.6;
+    transition-duration: 0.12s;
+    color: #2196f3;
+
+    &:hover {
+        opacity: 1;
+    }
+}

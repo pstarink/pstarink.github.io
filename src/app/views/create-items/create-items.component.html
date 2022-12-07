@@ -1,0 +1,108 @@
+<p-toast position="center" key="c"></p-toast>
+
+<p-confirmDialog [style]="{'width':'50vw','minWidth':'400px','maxWidth':'600px'}" [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-outlined p-button-secondary"
+  acceptButtonStyleClass="p-button-warning">
+</p-confirmDialog>
+
+<div class="flex flex-column">
+
+  <div class="card">
+    <form (ngSubmit)="addItems()" [formGroup]="form">
+
+      <div class="formgrid grid">
+        <div class="field col-12 md:col-3 mt-1">
+          <label for="picklist">Category</label>
+          <p-dropdown inputId="picklist" formControlName="picklist"
+            [options]="picklists?.canLabel"
+            optionLabel="name"
+            [autoDisplayFirst]="false"
+            styleClass="w-full"
+            [showClear]="true"
+            (onChange)="theList=$event.value"></p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-3 mt-1">
+          <label for="option">{{ theList?.name || "Part" }}</label>
+          <p-dropdown inputId="option" formControlName="option"
+            [options]="theList?.options"
+            optionLabel="name"
+            styleClass="w-full"
+            [autoDisplayFirst]="false"></p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-3 mt-1">
+          <label for="count">Quantity</label>
+          <p-inputNumber inputId="count" formControlName="count"
+            [showButtons]="true"
+            class="w-full"
+            styleClass="w-full"
+            mode="decimal"></p-inputNumber>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field col-12 md:col-3 mt-1">
+          <label for="title">Title</label>
+          <input id="title" formControlName="title"
+            type="text"
+            class="w-full"
+            pInputText>
+        </div>
+
+        <div class="field col-12 md:col-3 mt-1">
+          <label for="details1">Details</label>
+          <input id="details1" formControlName="details1"
+            class="w-full"
+            type="text" pInputText>
+        </div>
+
+        <div class="field col-12 md:col-3 mt-1">
+          <label for="details2">Details</label>
+          <input id="details2" formControlName="details2"
+            type="text"
+            class="w-full"
+            pInputText>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field col-12 md:col-3 mt-1">
+          <label for="option">Label format</label>
+          <p-dropdown inputId="format" formControlName="format"
+            [options]="picklists.options('LabelFormat')"
+            optionLabel="name"
+            [autoDisplayFirst]="false"
+            styleClass="w-full"
+            [showClear]="true">
+          </p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-3 mt-1">
+          <label for="option">Label printer</label>
+          <p-dropdown inputId="printer" formControlName="printer"
+            [options]="picklists.options('Printer')"
+            optionLabel="name"
+            [autoDisplayFirst]="false"
+            styleClass="w-full"
+            [showClear]="true">
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <p-button label="Add to Worklist" icon="pi pi-sort-down" iconPos="right" (click)="addItems()" [disabled]="form.invalid"></p-button>
+      </div>
+    </form>
+  </div>
+
+
+  <div class="card p-0">
+    <tbl [value]="itemSets" [cols]="cols"></tbl>
+    <div *ngIf="itemSets?.length" class="flex mt-4 mb-2">
+      <button pButton pRipple type="button" class="p-button-text ml-auto mr-2" label="Clear" (click)="cancel()"></button>
+      <p-button label="Submit" class="mr-2" (click)="create()"></p-button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,107 @@
+{
+    "controls": [
+        {
+            "key": "firstName",
+            "name": "First Name",
+            "type": "text",
+            "icon": "user",
+            "validators": {
+                "required": true,
+                "minLength": 10
+            }
+        },
+        {
+            "key": "lastName",
+            "name": "Last Name",
+            "icon": "user",
+            "type": "text"
+        },
+        {
+            "key": "gender",
+            "name": "Gender",
+            "type": "select",
+            "options": [
+                { "id": 1, "name": "Male" },
+                { "id": 2, "name": "Female" },
+                { "id": 3, "name": "Private" }
+            ]
+        },
+        {
+            "key": "choice",
+            "name": "Choice",
+            "type": "select",
+            "options": ["Yes", "No", "Maybe"]
+        },
+        {
+            "key": "age",
+            "name": "Age",
+            "placeholder": "Enter your age",
+            "type": "number",
+            "decimals": 0,
+            "validators": {
+                "required": true,
+                "min": 10,
+                "max": 100
+            }
+        },
+        {
+            "key": "ratio",
+            "name": "Ratio",
+            "placeholder": "The ratio",
+            "type": "number",
+            "decimals": 2,
+            "validators": {
+                "min": 0,
+                "max": 1
+            }
+        },
+        {
+            "key": "vaca",
+            "name": "Vacation",
+            "placeholder": "Vacation period",
+            "type": "date",
+            "dateMode": "range",
+            "showTime": true
+        },
+        {
+            "key": "dob",
+            "name": "Birthday",
+            "placeholder": "Date of birth",
+            "type": "date",
+            "dateMode": "single",
+            "showTime": true
+        },
+        {
+            "key": "comments",
+            "name": "Comments",
+            "value": "",
+            "type": "textarea"
+        },
+        {
+            "key": "agreeTerms",
+            "name": "Do you agree?",
+            "value": "false",
+            "type": "checkbox"
+        },
+        {
+            "key": "lightDark",
+            "name": "Toggle dark mode",
+            "value": 0,
+            "type": "checkbox"
+        },
+        {
+            "key": "size",
+            "name": "Size",
+            "type": "range",
+            "min": "0",
+            "max": "100",
+            "step": "1",
+            "icon": "sunny"
+        },
+        {
+            "key": "sample",
+            "name": "Sample Name",
+            "type": "fk"
+        }
+    ]
+}

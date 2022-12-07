@@ -1,0 +1,50 @@
+<p-toast></p-toast>
+
+<p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width:'50vw','max-width':'550px'}" [draggable]="true" [resizable]="false">
+
+  <ng-template pTemplate="header">
+    <dialog-header icon="user" [title]="task===1?'Edit User':'New User'" (onClose)="displayModal=false"></dialog-header>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="formgrid grid p-2">
+
+      <div class="field col-12 md:col-6">
+        <form-text
+          label="Name"
+          [(ngModel)]="model.name"
+          #ctrl="ngModel"
+          required
+          minlength="4">
+        </form-text>
+        <val-errors [control]="ctrl.control" label="The user name"></val-errors>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <form-select
+          label="Role"
+          [(ngModel)]="model.roleType"
+          picklist="Role"
+          #role="ngModel"
+          required>
+        </form-select>
+        <val-errors [control]="role.control" label="The user role"></val-errors>
+      </div>
+
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <dialog-footer (onReject)="displayModal=false" (onAccept)="submit()"></dialog-footer>
+  </ng-template>
+
+</p-dialog>
+
+
+<div class="mb-2">
+  <button pButton pRipple type="button" icon="pi pi-plus-circle" label="Add User" tooltipPosition="right" (click)="addUser()"></button>
+</div>
+
+<div>
+  <tbl fxFlex [cols]="cols" [value]="rows"></tbl>
+</div>

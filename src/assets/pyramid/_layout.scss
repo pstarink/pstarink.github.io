@@ -1,0 +1,36 @@
+//https://www.mashen.zone/thread-122296.htm
+
+/*
+router-outlet + * {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px);
+}
+
+@media (max-width: 1091px) {
+    router-outlet + * {
+        height: calc(100vh - 110px);
+    }
+    .layout-content {
+        padding-top: 8px !important;
+        margin-top: 0 !important;
+    }
+}
+*/
+
+@at-root
+.dlg-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--surface-50);
+    z-index: 10;
+}
+
+.dlg-header + * {
+    margin-top: 150px;
+}
+
+.p-dialog-content {
+    padding: 0 !important;
+}

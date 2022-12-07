@@ -1,0 +1,18 @@
+<div class="card">
+  <h4>Parameters</h4>
+  <p>Define width, height, number of colord and number of patterns.</p>
+  <button pButton type="button" label="Solve" (click)="solve()"></button>
+</div>
+
+<div *ngIf="squares?.length" class="card">
+
+    <div *ngFor="let row of range(rows)" class="wrapper">
+      <div *ngFor="let col of range(cols)" class="box" [style.background]="quilt[row*cols + col]?.color">
+        {{ quilt[row*cols + col]?.pattern }}
+      </div>
+    </div>
+
+    <div>ns: {{ ns }}</div>
+    <div>nq: {{ nq }}</div>
+
+</div>

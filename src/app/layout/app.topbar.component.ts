@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { BizService } from '@app/services'
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 
@@ -12,7 +13,10 @@ export class AppTopbarComponent {
 
     @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
-    constructor(public layoutService: LayoutService, public el: ElementRef) { }
+  constructor(
+    public layoutService: LayoutService,
+    public el: ElementRef,
+    public biz: BizService) { }
 
 
     onMenuButtonClick() {
@@ -32,7 +36,7 @@ export class AppTopbarComponent {
     }
 
     get logo() {
-        const logo = this.layoutService.config.menuTheme === 'white' || this.layoutService.config.menuTheme === 'orange' ? 'dark' : 'white';
+        const logo = this.layoutService.config.menuTheme === 'white' || this.layoutService.config.menuTheme === 'orange' ? 'dark' : 'light';
         return logo;
     }
 

@@ -1,0 +1,132 @@
+<p-toast></p-toast>
+
+<p-splitter class="min-h-full" [style]="{'min-height': '100%'}" [panelSizes]="[30,70]">
+
+  <ng-template pTemplate>
+    <div class="w-full h-full">
+      <div class="card mb-0 p-2 flex gap-1">
+        <button pButton pRipple type="button" icon="pi pi-angle-double-down" class="p-button-rounded p-button-text" (click)="expandAll()"></button>
+        <button pButton pRipple type="button" icon="pi pi-angle-double-up" class="p-button-rounded p-button-text" (click)="collapseAll()"></button>
+
+        <button pButton type="button" label="picklist" icon="pi pi-plus" class="ml-auto p-button-text p-button-sm"></button>
+        <button pButton type="button" [disabled]="lookup === null" label="option" icon="pi pi-plus" class="p-button-text p-button-sm"></button>
+      </div>
+      <p-tree
+        [value]="tree"
+        [filter]="true" selectionMode="single"
+        [(selection)]="selectedLookup"
+        (onNodeSelect)="lookupSelect($event)"
+        (onNodeUnselect)="lookupUnselect($event)"></p-tree>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate>
+    <div *ngIf="model" [style]="{'max-width':'1400px'}" class="card">
+
+      <form [formGroup]="form" (submit)="submit()">
+
+        <h3>{{ form?.value?.key }}</h3>
+
+        <div class="field">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua.
+        </div>
+
+        <div class="grid">
+
+          <!-- group -->
+          <div class="field col mb-0">
+            <form-text
+              label="Group Key"
+              [disabled]="isOption"
+              formControlName="group">
+            </form-text>
+            <val-errors controlName="name" label="The group"></val-errors>
+          </div>
+
+          <!-- picklist -->
+          <div class="field col mb-0">
+            <form-text
+              label="Picklist Key"
+              prompt="key"
+              [disabled]="isOption"
+              formControlName="picklist">
+            </form-text>
+          </div>
+
+        </div>
+
+        <!-- option -->
+        <div *ngIf="isOption" class="field">
+          <form-text
+            label="Option Key"
+            formControlName="option">
+          </form-text>
+        </div>
+
+        <!-- name -->
+        <div class="field">
+          <form-text
+            label="Display Name"
+            formControlName="name">
+          </form-text>
+        </div>
+
+        <!-- isEnabled -->
+        <div class="field">
+          <form-check
+            label="Enabled"
+            formControlName="isEnabled">
+          </form-check>
+        </div>
+
+        <!-- isItem -->
+        <div class="field">
+          <form-check
+            label="Item"
+            formControlName="isItem">
+          </form-check>
+        </div>
+
+        <ng-container *ngIf="def">
+
+          <div class="grid">
+
+            <div class="field col pb-0 mb-0">
+              <form-number
+                label="Number of Rows"
+                formControlName="wellRows">
+              </form-number>
+            </div>
+
+            <div class="field col mb-0">
+              <form-number
+                label="Number of Columns"
+                formControlName="wellCols">
+              </form-number>
+            </div>
+            
+            <div class="field col">
+              <form-number
+              formControlName="wellVolume"
+              label="Well Volume"
+              decimals="3"
+              units="Units:Volume">
+            </form-number>
+          </div>
+        </div>
+
+        </ng-container>
+
+      </form>
+
+      <changed-info [model]="model"></changed-info>
+
+      <pre class="m-2 p-2 text-sm bg-yellow-50">{{ form.value | json }}</pre>
+      <!-- <pre class="m-2 p-2 text-sm bg-yellow-50">{{ model | json }}</pre> -->
+      <pre class="m-2 p-2 text-sm bg-yellow-50">Changed: {{ changed }}</pre>
+
+    </div>
+
+  </ng-template>
+</p-splitter>

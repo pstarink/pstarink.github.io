@@ -1,0 +1,399 @@
+<!-- <p-confirmDialog [style]="{'width':'50vw','minWidth':'400px','maxWidth':'600px'}" [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-outlined p-button-secondary"
+  acceptButtonStyleClass="p-button-warning"></p-confirmDialog> -->
+
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+    <p-button label="Message" class="mr-2" (click)="message()"></p-button>
+    <p-button label="Info" class="mr-2" (click)="info()"></p-button>
+    <p-button label="Alert" class="mr-2" (click)="alert()"></p-button>
+    <p-button label="Confirm" class="mr-2" (click)="confirm()"></p-button>
+    <p-button label="Prompt" class="mr-2" (click)="prompt()"></p-button>
+    <p-button label="JSON" class="mr-2" icon="pi pi-code" (click)="json()"></p-button>
+    <p-button label="Dynamic" class="mr-2" icon="pi pi-credit-card" (click)="show()"></p-button>
+    <p-button label="Component" icon="pi pi-external-link" (click)="popup()"></p-button>
+  </div>
+</p-toolbar>
+
+<div *ngIf="false" class="card p-0 mt-6">
+  <tbl [value]="rows" [cols]="cols"></tbl>
+</div>
+
+<form [formGroup]="testForm" (submit)="submit()">
+
+  <div class="card mb-2">
+    <h4>Amount + Units</h4>
+
+    <div class="grid formgrid">
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-number
+          formControlName="vNumberUnit"
+          label="Clean"
+          prompt="amount"
+          decimals="2"
+          units="Units:Mass,Units:Volume">
+        </form-number>
+        <pre class="inspect">[{{ testForm.value.vNumberUnit }}]</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-number
+          formControlName="vNumberUnit1"
+          label="Picklist Unit"
+          prompt="amount"
+          decimals="2"
+          units="Units:Mass,Units:Volume.uL">
+        </form-number>
+        <pre class="inspect">[{{ testForm.value.vNumberUnit1 }}]</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-number
+          formControlName="vNumberUnit2"
+          label="Default"
+          prompt="amount"
+          decimals="2"
+          [default]="[222,502]"
+          units="Units:Mass,Units:Volume.uL">
+        </form-number>
+        <pre class="inspect">[{{ testForm.value.vNumberUnit2 }}]</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-number
+          formControlName="vNumberUnit3"
+          label="Form"
+          prompt="amount"
+          decimals="2"
+          [default]="[222,502]"
+          units="Units:Mass,Units:Volume.uL">
+        </form-number>
+        <pre class="inspect">[{{ testForm.value.vNumberUnit3 }}]</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-number
+          formControlName="vNumberUnit4"
+          label="Patch"
+          prompt="amount"
+          decimals="2"
+          [default]="[222,502]"
+          units="Units:Mass,Units:Volume.uL">
+        </form-number>
+        <pre class="inspect">[{{ testForm.value.vNumberUnit4 }}]</pre>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TEXT -->
+  <div class="card mb-2">
+    <h4>Text</h4>
+    <div class="formgrid grid">
+
+      <!-- text box -->
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-text
+          label="Text Box"
+          prompt="enter your full name"
+          icon="user"
+          formControlName="vText">
+        </form-text>
+        <val-errors controlName="vText" label="Your name"></val-errors>
+        <pre class="inspect">{{ testForm.value.vText }}</pre>
+      </div>
+
+      <!-- text area -->
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-text
+          label="Text Area"
+          prompt="enter your full address"
+          rows=4
+          formControlName="vTextarea">
+        </form-text>
+        <val-errors controlName="vTextarea" label="Your address"></val-errors>
+        <pre class="inspect">{{ testForm.value.vTextarea }}</pre>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card mb-2">
+    <h4>Dropdowns</h4>
+    <div class="formgrid grid">
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-select
+          icon="user"
+          label="List: Role"
+          formControlName="vSelectList"
+          picklist="Role">
+        </form-select>
+        <val-errors controlName="vSelectList" label="Your role"></val-errors>
+        <pre class="inspect">{{ testForm.value.vSelectList }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-select
+          name="USER"
+          prompt="Role.User"
+          label="Option: Role.User"
+          formControlName="vSelectOption"
+          picklist="Role.User">
+        </form-select>
+        <val-errors controlName="vSelectOption" label="Your role"></val-errors>
+        <pre class="inspect">{{ testForm.value.vSelectOption }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-select
+          prompt="Single: 100"
+          label="ListId: 100"
+          formControlName="vSelectListId"
+          [picklist]="100">
+        </form-select>
+        <val-errors controlName="vSelectListId" label="Your role"></val-errors>
+        <pre class="inspect">{{ testForm.value.vSelectListId }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-select
+          prompt="Single: 103"
+          label="OptionId: 103"
+          formControlName="vSelectOptionId"
+          [picklist]="103">
+        </form-select>
+        <val-errors controlName="vSelectOptionId" label="Your role"></val-errors>
+        <pre class="inspect">{{ testForm.value.vSelectOptionId }}</pre>
+      </div>
+    </div>
+
+    <div class="formgrid grid">
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-select
+          label="Cascade: Units:Volume"
+          formControlName="vCascadeSingle"
+          picklist="Units:Volume">
+        </form-select>
+        <val-errors controlName="vCascadeSingle" label="The units"></val-errors>
+        <pre class="inspect">{{ testForm.value.vCascadeSingle }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-select
+          label="Cascade: Mass,Volume.mL"
+          formControlName="vCascadeMulti"
+          picklist="Units:Mass,Units:Volume.uL">
+        </form-select>
+        <val-errors controlName="vCascadeMulti" label="The units"></val-errors>
+        <pre class="inspect">{{ testForm.value.vCascadeMulti }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-select
+          label="Multi Select"
+          formControlName="vSelectMulti"
+          multi="true"
+          picklist="Units:Mass">
+        </form-select>
+        <val-errors controlName="vSelectMulti" label="The units"></val-errors>
+        <pre class="inspect">[{{ testForm.value.vSelectMulti  }}]</pre>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NUMBERS -->
+  <div class="card mb-4">
+    <h4>Numbers</h4>
+    <div class="formgrid grid">
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-number
+          formControlName="vQuantity"
+          label="Quantity">
+        </form-number>
+        <val-errors controlName="vQuantity" label="The amount"></val-errors>
+        <pre class="inspect">[{{ testForm.value.vQuantity  }}]</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-number
+          formControlName="vNumber"
+          label="Default"
+          decimals=3
+          default=2.718>
+        </form-number>
+        <val-errors controlName="vNumber" label="The amount"></val-errors>
+        <pre class="inspect">{{ testForm.value.vNumber  }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-number
+          formControlName="vNumber2"
+          label="Patch"
+          decimals=3
+          default=2.718>
+        </form-number>
+        <val-errors controlName="vNumber2" label="The amount"></val-errors>
+        <pre class="inspect">{{ testForm.value.vNumber2  }}</pre>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DATES AND TIMES -->
+  <div class="card mb-4">
+    <h4>Dates and Times</h4>
+    <div class="formgrid grid">
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-date
+          mode="date"
+          label="Date"
+          formControlName="vDate"
+          required>
+        </form-date>
+        <val-errors controlName="vDate" label="The date"></val-errors>
+        <pre class="inspect">{{ testForm.value.vDate  }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-date
+          mode="time"
+          label="Time"
+          formControlName="vTime">
+        </form-date>
+        <val-errors controlName="vTime" label="The time"></val-errors>
+        <pre class="inspect">{{ testForm.value.vTime  }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-date
+          mode="datetime"
+          label="Date & Time"
+          formControlName="vDateTime">
+        </form-date>
+        <val-errors controlName="vDateTime" label="The date"></val-errors>
+        <pre class="inspect">{{ testForm.value.vDateTime  }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-date
+          mode="daterange"
+          label="Date range"
+          formControlName="vDateRange">
+        </form-date>
+        <val-errors controlName="vDateRange" label="The date range"></val-errors>
+        <pre class="inspect">{{ testForm.value.vDateRange  }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-date
+          mode="month"
+          label="Month"
+          formControlName="vMonth">
+        </form-date>
+        <val-errors controlName="vMonth" label="The month"></val-errors>
+        <pre class="inspect">{{ testForm.value.vMonth  }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-date
+          mode="year"
+          label="Year"
+          formControlName="vYear">
+        </form-date>
+        <val-errors controlName="vYear" label="The year"></val-errors>
+        <pre class="inspect">{{ testForm.value.vYear  }}</pre>
+      </div>
+
+      <div class="field col-12 md:col-6 lg:col-4 mb-4">
+        <form-date
+          mode="duration"
+          label="Duration"
+          seconds=true
+          formControlName="vDuration">
+        </form-date>
+        <val-errors controlName="vDuration" label="The duration"></val-errors>
+        <pre class="inspect">{{ testForm.value.vDuration  }}</pre>
+      </div>
+
+    </div>
+  </div>
+
+
+
+</form>
+
+<form [formGroup]="form" (submit)="submit()">
+
+  <div class="grid">
+
+    <div class="col-8">
+
+      <!-- BARCODES
+      <div class="card">
+        <h4>Barcodes</h4>
+        <div class="formgrid grid">
+
+          <div class="field col-12 md:col-6 lg:col-4 mb-4">
+            <form-barcode
+              prompt="Barcode: format only"
+              icon="box"
+              label="Container"
+              recipe="Recipe.Buffer"
+              formControlName="b1">
+            </form-barcode>
+          </div>
+
+        </div>
+      </div> -->
+      <!-- SELECT -->
+
+      <!-- OTHER -->
+      <div *ngIf="false" class="card mb-4">
+        <h4>Other</h4>
+        <div class="formgrid grid">
+
+          <div class="field col-12 md:col-6 lg:col-4 mb-4 flex my-2 align-items-end">
+            <form-check
+              label="Enabled"
+              formControlName="vCheck"
+              [required]="false">
+            </form-check>
+            <val-errors controlName="vCheck" label="This check"></val-errors>
+          </div>
+
+          <div class="field col-12 md:col-4 lg:col-4 mb-0">
+            <form-record
+              label="Sample"
+              formControlName="vSample"
+              prompt="select a sample"
+              table="Samples"
+              valueProp="name">
+            </form-record>
+            <val-errors controlName="vSample" label="The sample"></val-errors>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-4">
+      <div class="card mb-4">
+        <h4>FORM MODEL</h4>
+        <pre>{{ form.getRawValue() | json }}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <p-button label="Submit" type="submit"></p-button>
+  </div>
+</form>

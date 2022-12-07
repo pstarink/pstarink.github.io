@@ -1,0 +1,164 @@
+<p-toast></p-toast>
+
+<p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width:'50vw','max-width':'600px'}" [draggable]="true" [resizable]="false">
+
+  <ng-template pTemplate="header">
+    <dialog-header icon="pencil" [title]="taskText()" (close)="displayModal=false"></dialog-header>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="formgrid grid p-2">
+
+      <!-- <div class="field col-12">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+        laboris nisi ut aliquip ex ea commodo consequat.
+      </div> -->
+      <div class="field col-6 mt-2">
+        <form-text
+          label="Key"
+          [(ngModel)]="model.key"
+          #ctrl="ngModel"
+          required="true">
+        </form-text>
+        <val-errors [control]="ctrl.control" label="The key"></val-errors>
+      </div>
+
+      <div class="field col-6 mt-2">
+        <form-text
+          label="Name"
+          [(ngModel)]="model.name">
+        </form-text>
+      </div>
+
+      <div *ngIf="!model.parentId" class="field col-12 mt-3">
+        <form-select
+          label="Access Role"
+          [(ngModel)]="model.roleType"
+          picklist="Role">
+        </form-select>
+      </div>
+
+      <div class="field col-12 md:col-6 mt-2">
+        <p-checkbox name="tangible" binary=false [falseValue]=0 [trueValue]=1 label="Item" [(ngModel)]="model.isItem"></p-checkbox>
+      </div>
+
+      <div class="field col-12 md:col-6 mt-2">
+        <p-checkbox name="enabled" binary=false [falseValue]=0 [trueValue]=1 label="Enabled" [(ngModel)]="model.isEnabled"></p-checkbox>
+      </div>
+
+      <ng-container *ngIf="isContainer">
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-number
+            label="Number of Rows"
+            [(ngModel)]="def.wellRows">
+          </form-number>
+        </div>
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-number
+            label="Number of Columns"
+            [(ngModel)]="def.wellCols">
+          </form-number>
+        </div>
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-number
+            [(ngModel)]="volumeUnits"
+            label="Well Volume"
+            decimals="3"
+            units="Units.Volume">
+          </form-number>
+        </div>
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-select
+            label="Well shape"
+            picklist="WellShape"
+            [(ngModel)]="def.wellShapeType">
+          </form-select>
+        </div>
+
+        <div class="m-2 p-2 text-sm bg-yellow-50">{{ def | json }}</div>
+
+      </ng-container>
+    </div>
+
+    <changed-info [model]="model"></changed-info>
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <dialog-footer acceptText="SUBMIT" (reject)="displayModal=false" (accept)="submit()"></dialog-footer>
+  </ng-template>
+
+  <!-- 
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-times" (click)="displayModal=false" label="CANCEL" styleClass="p-button-text"></p-button>
+    <p-button icon="pi pi-check" (click)="submit()" label="SUBMIT"></p-button>
+  </ng-template> -->
+</p-dialog>
+
+<p-contextMenu #cm [model]="items"></p-contextMenu>
+
+<p-treeTable *ngIf="true" #tt [value]="tree" [columns]="cols"
+  selectionMode="single"
+  dataKey="key"
+  [scrollable]="true"
+  scrollHeight="flex"
+  (onContextMenuSelect)="setContextMenu($event.node)"
+  [(contextMenuSelection)]="selectedNode"
+  (onNodeSelect)="nodeSelect($event.node)"
+  (onNodeExpand)="nodeExpand($event.node)"
+  (onNodeCollapse)="nodeCollapse($event.node)"
+  [contextMenu]="cm"
+  [autoLayout]="true"
+  styleClass="p-treetable-sm">
+
+  <ng-template pTemplate="caption">
+
+    <div class="flex align-items-center">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input #search type="text" [showClear]="true" pInputText size="20" placeholder="Search" (mouseup)="$event.target.select()" (input)="tt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </span>
+      <button pButton pRipple type="button" [label]="rotateText"
+        [icon]="rotateIcon" (click)="rotateState()" class="ml-2 p-button-text p-button-secondary p-button-sm"></button>
+      <button pButton pRipple type="button" icon="pi pi-plus" class="ml-auto p-button-rounded" pTooltip="New Picklist" tooltipPosition="left" (click)="addLookup(1)"></button>
+    </div>
+
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" [style.width.px]="col.wd">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+    <tr [ttContextMenuRow]="rowNode" [ttRow]="rowNode">
+      <td *ngFor="let col of columns; let i=index" [style.width.px]="col.wd">
+        <container-element [ngSwitch]="col.field">
+          <ng-container *ngSwitchCase="'key'">
+            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+            {{ rowData['key'] }}
+          </ng-container>
+          <i *ngSwitchCase="'isItem'" [ngClass]="{'pi pi-check':rowData['isItem']}"></i>
+          <i *ngSwitchCase="'isEnabled'" [ngClass]="{'pi pi-check':rowData['isEnabled']}"></i>
+          <span *ngSwitchCase="'roleType'">{{ rowData.parentId ? "" : (picklists.name[rowData['roleType']] ?? "-") }}</span>
+          <span *ngSwitchDefault>{{rowData[col.field]}}</span>
+        </container-element>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td [attr.colspan]="cols.length">No lookups to display</td>
+    </tr>
+  </ng-template>
+
+</p-treeTable>

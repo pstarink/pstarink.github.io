@@ -13,7 +13,7 @@ export class AppSidebarComponent implements OnDestroy {
         let logo;
         
         if(this.layoutService.config.colorScheme == 'light'){
-            logo = (this.layoutService.config.menuTheme === 'white' || this.layoutService.config.menuTheme === 'orange') ? 'dark' : 'white';
+            logo = (this.layoutService.config.menuTheme === 'white' || this.layoutService.config.menuTheme === 'orange') ? 'dark' : 'light';
         } 
         else {
             logo = 'dark';

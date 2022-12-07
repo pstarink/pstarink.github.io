@@ -1,0 +1,66 @@
+<div *ngIf="false" class="overflow-y-auto h-full">
+  <table>
+    <tr>
+      <th *ngFor="let col of cols" [style.width.px]="col.wd">{{ col.header }}</th>
+    </tr>
+    <tr *ngFor="let row of value">
+      <td *ngFor="let col of cols">
+        <i *ngIf="col.type==='icon'; else other" class="pi pi-{{col.icon}} cursor-pointer warning" (click)="col.click(col.icon, row)"></i>
+        <ng-template #other>
+          {{ col.render ? col.render(row) : row[col.field] }}
+        </ng-template>
+      </td>
+    </tr>
+  </table>
+  <div *ngIf="value?.length===0" class="empty">
+    THE WORKLIST IS EMPTY
+  </div>
+</div>
+
+<!--
+scrollHeight="flex"
+[scrollable]="true"
+-->
+
+<p-table *ngIf="true" #dt
+  [columns]="cols"
+  [value]="value"
+  selectionMode="none"
+  [(selection)]="selection"
+  styleClass="p-datatable-sm"
+  (onRowSelect)="selectRow($event)">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" [style.max-width.px]="col.wd">{{ col.header }}</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-row let-columns="columns">
+    <tr [pSelectableRow]="row" [pSelectableRowDblClick]="row" (click)="onRowSelect($event, row)">
+      <td *ngFor="let col of columns" [style.width.px]="col.wd">
+        <container-element [ngSwitch]="col.type">
+          <div *ngSwitchCase="'p-icon'">
+            <i *ngFor="let icon of col.icon.split(',')" class="pi pi-{{icon}} cursor-pointer" (click)="col.click(icon, row)"></i>
+          </div>
+          <i *ngSwitchCase="'p-icon'" class="w-full pi pi-{{col.icon}} cursor-pointer warning" (click)="col.click(icon, row)"></i>
+          <div *ngSwitchCase="'icon'">
+            <span *ngFor="let icon of col.icon.split(',')" class="material-icons-two-tone accent-light cursor-pointer" (click)="col.click(icon, row)">
+              {{ icon }}
+            </span>
+          </div>
+          <div *ngSwitchDefault>
+            {{ col.render ? col.render(row) : row[col.field] }}
+          </div>
+        </container-element>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="columns.length">
+        <div class="empty">NO RECORDS</div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

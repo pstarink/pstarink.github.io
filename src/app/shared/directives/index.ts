@@ -1,0 +1,1 @@
+export { BoldDirective, FBDirective } from './fb.directive'
