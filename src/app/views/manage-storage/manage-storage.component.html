@@ -1,0 +1,214 @@
+<p-toast></p-toast>
+
+<p-dialog header="Header" [(visible)]="displayModal" [modal]="true" [style]="{width:'50vw','max-width':'600px'}" [draggable]="true" [resizable]="false">
+
+  <ng-template pTemplate="header">
+    <dialog-header icon="pencil" [title]="taskText()" (close)="displayModal=false"></dialog-header>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <form [formGroup]="form" (submit)="submit()">
+      <div class="formgrid grid">
+
+        <!--
+        model
+        name
+        position (in parent)
+        layout (rows x cols)
+        isFixed
+        isEnabled
+        //
+        parent model and name
+        parent barcode
+        parent layout
+      -->
+
+        <div *ngIf="parent" class="field col-12 mt-2">
+          <div>Barcode: {{ parent.barcode }}</div>
+          <div>Model: {{ parentModel?.name || "-" }}</div>
+          <div>Name: {{ parent.name }}</div>
+          <div>Layout: {{ parent.layout }}</div>
+        </div>
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-select
+            label="Location Type"
+            formControlName="locationModelId"
+            [options]="modelOptions">
+          </form-select>
+        </div>
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-text
+            label="Name"
+            formControlName="name">
+          </form-text>
+        </div>
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-text
+            label="Position"
+            formControlName="position">
+          </form-text>
+        </div>
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-text
+            label="Layout"
+            formControlName="layout">
+          </form-text>
+        </div>
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-check
+            label="Fixed"
+            formControlName="isFixed">
+          </form-check>
+        </div>
+
+        <div class="field col-12 md:col-6 mt-2">
+          <form-check
+            label="Enabled"
+            formControlName="isEnabled">
+          </form-check>
+        </div>
+
+        <div class="pl-3 pb-2">
+          <changed-info [model]="model"></changed-info>
+        </div>
+      </div>
+    </form>
+
+    <div>
+      Changed: {{ changed }}
+    </div>
+
+    <div>{{ form.value | json }}</div>
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <dialog-footer (reject)="displayModal=false" acceptText="UPDATE" (accept)="submit()" [changed]="changed"></dialog-footer>
+  </ng-template>
+
+</p-dialog>
+
+<div class="flex-wrapper">
+
+  <p-splitter class="h-full" styleClass="h-full" [panelSizes]="[30,70]">
+
+    <ng-template pTemplate>
+      <div class="w-full flex flex-column">
+        <p-tree #storage
+          class="overflow-y-auto h-full"
+          scrollHeight="flex"
+          [value]="tree"
+          (onNodeExpand)="nodeExpand()"
+          (onNodeCollapse)="nodeCollapse()"
+          [(selection)]="selectedNode"
+          selectionMode="single"
+          (onNodeSelect)="selectNode($event.node)">
+
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center">
+              <!-- filter box -->
+              <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input #search [showClear]="true" class="p-inputtext" size="12" placeholder="Filter" (mouseup)="$event.target.select()" (input)="storage._filter($event.target.value, 'contains')">
+              </span>
+              <!-- rotate tree state -->
+              <button pButton [pTooltip]="rotateText" pTooltipPosition="below" [icon]="rotateIcon" (click)="rotateState()" class="ml-1 p-button-text p-button-rounded"></button>
+              <!-- add top level node -->
+              <button pButton icon="pi pi-plus-circle" class="ml-auto p-button-rounded p-button-text" pTooltip="New Top Level Location" tooltipPosition="right" (click)="addLocation(1)"></button>
+            </div>
+          </ng-template>
+
+          <ng-template let-node pTemplate="btn">
+            <div class="flex align-items-center cursor-auto">
+              <span>{{ node.label }}</span>
+              <span class="ml-auto popin">
+                <i class="pi pi-pencil mr-2" (click)="editLocation(EDIT_LOCATION, node.data)"></i>
+                <i class="pi pi-plus-circle mr-2" (click)="addLocation(ADD_LOCATION, node.data)"></i>
+                <i class="pi pi-trash" (click)="deleteLocation()"></i>
+              </span>
+            </div>
+          </ng-template>
+        </p-tree>
+        <p-panelMenu [model]="items" [style]="{'width':'100%'}"></p-panelMenu>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate>
+      <div *ngIf="view==='storage' && location" [style]="{'max-width':'1000px'}" class="card overflow-y-auto">
+
+        <h3>{{ location.name }}</h3>
+
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua.
+        </div>
+
+        <div>
+          <b>Barcode</b> {{ location.barcode }}
+        </div>
+
+        <div>
+          <b>Type</b> {{ typeName }}
+        </div>
+
+        <div>
+          <b>Layout</b> {{ location.layout || "-" }}
+        </div>
+
+        <div>
+          <b>Position</b> {{ location.position || "-" }}
+        </div>
+
+        <div>
+          <b>Is Fixed</b> {{ location.isFixed ? "yes" : "no" }}
+        </div>
+
+        <div>
+          <b>Is Enabled</b> {{ location.isEnabled ? "yes" : "no" }}
+        </div>
+
+        <div class="wrapper">
+          <div *ngIf="isHolder" class="holder" [style.grid-template-columns]="'repeat('+n+',minmax(20px,50px))'">
+            <div *ngFor="let pos of positions">
+              <div>{{pos.row}},{{pos.col}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="wrapper">
+          <div *ngIf="isContainer" class="container" [style.grid-template-columns]="'repeat('+n+',minmax(20px,50px))'">
+            <div class="top" *ngFor="let idx of colIndex">{{idx}}</div>
+            <div *ngFor="let pos of positions" [ngClass]="pos.class">
+              x
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="flex justify-content-end align-items-center p-2">
+            <button pButton pRipple type="button" class="p-button-text mr-2" label="Cancel" (click)="cancel()"></button>
+            <p-button label="Save" [disabled]="!form.valid || !changed" (click)="accept()"></p-button>
+          </div> -->
+        <changed-info [model]="location"></changed-info>
+
+      </div>
+
+      <div *ngIf="view==='holders'" class="p-4">HOLDERS</div>
+
+      <div *ngIf="view==='objects'" class="p-4">OBJECTS</div>
+    </ng-template>
+
+  </p-splitter>
+
+</div>
+
+<!--
+  Location details, e.g. address of building, room location or fridge model
+  Graphical representation of the layout and the position contents
+  List of all containers, etc. currently checked into the location
+  History of the location, mostly useful for holders
+  Upon selection of a container, show location history
+-->

@@ -26,7 +26,7 @@ import { FormBaseComponent } from './form-base.component'
           [showClear]="true"
           (keyup)="change($event.target.value, this._unit)"
           (onInput)="change($event.value, this._unit)"
-          (onClear)="_value=null;change(null,null)"
+          (onClear)="_value=null;change(null,this._unit)"
           (blur)="onTouched()">
         </p-inputNumber>
       </span>
@@ -44,7 +44,7 @@ import { FormBaseComponent } from './form-base.component'
               #ctrl="ngModel"
               placeholder="units"
               appendTo="body"
-              (onChange)="change(this.value, $event.value)"
+              (onChange)="change(this._value, $event.value)"
               (blur)="onTouched($event)">
             </p-dropdown>
         </ng-container>
@@ -61,7 +61,7 @@ import { FormBaseComponent } from './form-base.component'
               class="units"
               placeholder="units"
               appendTo="body"
-              (onChange)="change(this.value, $event.value)"
+              (onChange)="change(this._value, $event.value)"
               (blur)="onTouched($event)">
             </p-cascadeSelect>
         </ng-template>

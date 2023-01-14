@@ -1,0 +1,26 @@
+// tree styles
+
+.p-tree {
+  padding: 4px !important;
+}
+
+.popin {
+  visibility: hidden;
+  opacity:0;
+  transition: visibility 0.1s linear, opacity 0.25s linear;
+}
+
+.p-treenode-label {
+  width: 100%;
+  :hover .popin {
+    visibility: visible;
+    opacity:1;
+  }
+}
+
+.p-treenode-content {
+  cursor: default !important;
+  i {
+    cursor: pointer;
+  }
+}

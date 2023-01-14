@@ -6,10 +6,11 @@ import { AppTopbarComponent } from './app.topbar.component'
 import { LayoutService } from './service/app.layout.service'
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './app.layout.component.html'
+  selector: 'layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ["layout.component.scss"]
 })
-export class AppLayoutComponent implements OnDestroy {
+export class LayoutComponent implements OnDestroy {
 
   overlayMenuOpenSubscription: Subscription
 

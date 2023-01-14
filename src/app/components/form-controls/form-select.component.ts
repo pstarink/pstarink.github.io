@@ -94,10 +94,15 @@ export class FormSelectComponent extends FormBaseComponent implements OnInit, Va
 
   ngOnInit(): void {
     this.store.picklists$.pipe(untilDestroyed(this)).subscribe(picklists => {
-      if (picklists && (this.picklist || this.options)) {
-        this.model = this.options ? [{ options: this.options }] : this.picklists.listsBySpec(this.picklist)
+      if (picklists && this.picklist) {
+        this.model = this.picklists.listsBySpec(this.picklist)
         const selection = this.picklists.selectionBySpec(this.picklist)
         if (selection) this._value = selection.id
+        if (this.default) this._value = this.default
+        this.sleepUntil(() => this.onChange)
+          .then(() => this.onChange(this._value))
+      } else if (picklists && this.options) {
+        this.model = [{ options: this.options }]
         if (this.default) this._value = this.default
         this.sleepUntil(() => this.onChange)
           .then(() => this.onChange(this._value))

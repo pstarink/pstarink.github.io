@@ -1,12 +1,12 @@
 //https://www.mashen.zone/thread-122296.htm
 
-/*
-router-outlet + * {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 64px);
-}
+// router-outlet + div {
+//     display: flex;
+//     flex-direction: column;
+//     height: calc(100vh - 56px);
+// }
 
+/*
 @media (max-width: 1091px) {
     router-outlet + * {
         height: calc(100vh - 110px);
@@ -18,7 +18,13 @@ router-outlet + * {
 }
 */
 
-@at-root
+.flex-wrapper {
+    // flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 68px);
+}
+
 .dlg-header {
     position: fixed;
     top: 0;

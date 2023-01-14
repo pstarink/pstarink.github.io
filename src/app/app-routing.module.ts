@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core'
 import { ExtraOptions, RouterModule, Routes } from '@angular/router'
 import { AppLayoutComponent } from './layout/app.layout.component'
+import { LayoutComponent } from './layout/layout.component'
 
 const routerOptions: ExtraOptions = {
   anchorScrolling: 'enabled'
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
+  {
+    path: 'layout', component: AppLayoutComponent,
+    loadChildren: () => import('./views/manage-lookups/manage-lookups.module').then(m => m.ManageLookupsModule)
   },
   {
     path: '', component: AppLayoutComponent,
@@ -34,7 +39,6 @@ const routes: Routes = [
   //     { path: 'apps', loadChildren: () => import('./demo/components/apps/apps.module').then(m => m.AppsModule) }
   //   ]
   // },
-  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
   { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
   { path: 'notfound', loadChildren: () => import('./demo/components/notfound/notfound.module').then(m => m.NotfoundModule) },
   { path: '**', redirectTo: '/auth/login' }

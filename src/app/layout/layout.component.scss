@@ -1,17 +1,3 @@
-.box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    width: 50px;
-    height: 50px;
-    font-weight: bold;
-}
-
-.d {
-    padding: 10px;
-}
-
 :host {
     ::-webkit-scrollbar {
         height: 6px;
@@ -34,6 +20,7 @@
 }
 .content {
   grid-area: content;
+  border: 1px solid blue;
 }
 .main-nav {
   grid-area: nav;
@@ -41,9 +28,11 @@
 }
 .side {
   grid-area: sidebar;
+  background-color: green;
 }
 .ad {
   grid-area: ad;
+  background-color: greenyellow;
 }
 .main-footer {
   grid-area: footer;
@@ -52,7 +41,7 @@
 
 .wrapper {
   display: grid;
-  gap: 20px;
+  gap: 8px;
   grid-template-areas:
     "header"
     "nav"
@@ -60,6 +49,8 @@
     "sidebar"
     "ad"
     "footer";
+  width: 100vw;
+  height: 100vh;
 }
 
 @media (min-width: 500px) {
@@ -79,7 +70,8 @@
 
 @media (min-width: 700px) {
   .wrapper {
-    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-columns: max-content auto max-content;
+    grid-template-rows: max-content auto 60px max-content;
     grid-template-areas:
       "header header  header"
       "nav    content sidebar"

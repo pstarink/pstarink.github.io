@@ -11,38 +11,38 @@ import * as dayjs from "dayjs"
 @Component({
   selector: 'changed-info',
   template: `
-    <div class="mx-3 my-1 text-purple-400">
-      {{ info() }}
+    <div class="my-1" class="text-tan-500">
+      <span>{{ date }}</span>
+      <span *ngIf="user"> by <span class="text-tan-700">{{ user.name }}</span></span>
     </div>
 `
 })
-export class ChangedInfoComponent {
+export class ChangedInfoComponent implements OnInit {
   @Input() model
 
+  user: User
   users: User[]
 
   constructor(
     private store: StoreService
   ) {
-    store.users$.pipe(untilDestroyed(this)).subscribe(users => this.users = users)
+    store.users$.pipe(untilDestroyed(this)).subscribe(users => {
+      this.users = users
+    })
   }
 
-  info() {
-    let msg: string = ""
-    const dt = dayjs().format("YYYY/MM/DD")
-    const tm = dayjs().format("HH:mm")
-    if (!this.model) {
-      msg += "No information available"
-    } else if (!this.model.changedOn) {
-      msg += "No changed date"
+  ngOnInit(): void {
+    this.user = this.users?.find(user => user.id === this.model?.updatedBy)
+  }
+
+  get date() {
+    const dt = dayjs(this.model.updatedOn)
+    const date = dt.format("YYYY/MM/DD")
+    const time = dt.format("HH:mm")
+    if (!this.model?.updatedOn) {
+      return "No updated date"
     }
-    msg = `Last changed on ${dt} at ${tm} by ${this.getUser()}`
-    return msg
-  }
-
-  getUser(id: number = 0) {
-    const user = this.users?.find(user => user.id === this.model?.changedBy)
-    return user?.name ?? "n/a"
+    return `Last updated on ${date} at ${time}`
   }
 }
 

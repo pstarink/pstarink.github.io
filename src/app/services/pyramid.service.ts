@@ -194,9 +194,7 @@ export class PyramidService {
 
   listSettings = () => this.list('Settings')
 
-  readSetting = (key: string) =>
-    this.get(`settings/${key}`)
-      .then(val => val?.value ?? null)
+  readSetting = (key: string) => this.get(`settings/${key}`)
 
   saveSetting = (key: string, value: string) => this.post(`settings/${key}/${value}`)
 

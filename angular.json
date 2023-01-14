@@ -29,10 +29,7 @@
                         "aot": true,
                         "assets": ["src/favicon.ico", "src/assets"],
                         "styles": [
-                            "src/styles.scss",
-                            "./node_modules/@fullcalendar/common/main.css",
-                            "./node_modules/@fullcalendar/daygrid/main.css",
-                            "./node_modules/@fullcalendar/timegrid/main.css"
+                            "src/styles.scss"
                         ],
                         "scripts": [
                             "node_modules/prismjs/prism.js",

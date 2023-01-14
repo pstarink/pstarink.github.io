@@ -29,41 +29,6 @@ i {
     filter: invert(25%) sepia(22%) saturate(2894%) hue-rotate(344deg) brightness(92%) contrast(92%);
 }
 
-.primary {
-    filter: invert(25%) sepia(22%) saturate(2894%) hue-rotate(344deg) brightness(92%) contrast(92%);
-}
-.primary-light {
-    filter: invert(51%) sepia(100%) saturate(312%) hue-rotate(343deg) brightness(87%) contrast(88%);
-}
-.primary-dark {
-    filter: invert(11%) sepia(39%) saturate(3306%) hue-rotate(354deg) brightness(97%) contrast(97%);
-}
-
-.accent {
-    filter: invert(38%) sepia(70%) saturate(576%) hue-rotate(327deg)
-        brightness(90%) contrast(94%);
-}
-
-.accent-light {
-    filter: invert(47%) sepia(97%) saturate(1627%) hue-rotate(12deg)
-        brightness(101%) contrast(98%);
-}
-
-.gray {
-    filter: invert(98%) sepia(85%) saturate(163%) hue-rotate(186deg)
-        brightness(112%) contrast(88%);
-}
-
-.text-dark {
-    color: #521908;
-}
-.text-light {
-    color: #CA7B42;
-}
-.text-secondary {
-    color: #00205c;
-}
-
 .bordr {
     border: 1px solid darkorange;
 }
@@ -124,4 +89,8 @@ div.p-second-picker > span::after {
 .updown .p-inputnumber-clear-icon {
     position: absolute;
     right: 40px;
+}
+
+.bordr {
+  border: 4px solid red;
 }

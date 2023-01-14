@@ -8,13 +8,15 @@ import { NotifyService } from '..';
   template: `
     <div *ngIf="rejectText || acceptText" class="flex justify-content-end align-items-center p-2 shadow-1">
       <button *ngIf="rejectText" icon="pi pi-{{rejectIcon}}" pButton pRipple type="button" class="p-button-text mr-2" [label]="rejectText" (click)="onClose()"></button>
-      <p-button *ngIf="acceptText" icon="pi pi-{{acceptIcon}}" [label]="acceptText" [disabled]="!form?.valid" (click)="onAccept()"></p-button>
+      <p-button *ngIf="acceptText" [disabled]="!changed" icon="pi pi-{{acceptIcon}}" [label]="acceptText" [disabled]="!form?.valid" (click)="onAccept()"></p-button>
     </div>`
 })
 export class DialogFooterComponent {
   @Input() form: Form = null
   @Input() rejectIcon = "times"
   @Input() acceptIcon = "check"
+
+  @Input() changed = false
 
   @Input() rejectText = "CANCEL"
   @Input() acceptText = "SUBMIT"

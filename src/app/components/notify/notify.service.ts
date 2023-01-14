@@ -95,12 +95,13 @@ export class NotifyService {
     });
   }
 
-  public confirm(title: string, text: string): Promise<any> {
+  public confirm(title: string, text: string, options: any = null): Promise<any> {
     return this.run(NotifyComponent, {
       icon: "question-circle",
       title,
       text,
-      acceptText: "OK", rejectText: "CANCEL"
+      rejectText: options?.rejectText ?? "CANCEL",
+      acceptText: options?.acceptText ?? "OK"
     });
   }
 

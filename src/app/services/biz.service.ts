@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, OnInit } from "@angular/core";
 import { environment } from "@env";
-import { Container, User, ContainerModel, Lookup } from "@shared/entities"
+import { Container, User, ContainerModel, Lookup, Location } from "@shared/entities"
 import { Profile } from "@shared/models"
 import { map, Observable, of, tap } from "rxjs";
 import * as _ from "lodash";
@@ -66,22 +66,12 @@ export class BizService {
 
   tables: string[] = []
   columns: { [name: string]: string[] } = {}
-
   lookups: Lookup[]
   // get lookup id by (composite) key
-  keyToId: { [key: string | number]: number | undefined }
-  // get picklist by key
-  keyToList: { [key: string]: Lookup }
-  // get lookup by id
-  idToLookup: { [id: number]: Lookup }
-  // get picklist by option id
-  idToList: { [id: number]: Lookup }
-  // conversion of a unit to its base unit
   convert: { [key: number]: number }
 
   async processLookups(): Promise<boolean> {
     try {
-      // read schema metadata and lookups
       const calls = [
         this.pyramid.get("columns"),
         this.pyramid.list("Lookups"),
@@ -90,25 +80,6 @@ export class BizService {
       const [columns, lookups, unitScalings] = await Promise.all(calls)
       this.lookups = lookups as Lookup[]
       this.tables = Object.keys(columns)
-
-      // id to lookup
-      this.idToLookup = {}
-      this.lookups.forEach(lu => this.idToLookup[lu.id] = lu)
-
-      // lids and picklists
-      this.keyToId = {}
-      this.keyToList = {}
-      this.idToList = {}
-      const lists = this.lookups.filter(lu => !lu.parentId)
-      lists.forEach((pl) => {
-        this.keyToId[pl.key] = pl.id
-        this.keyToList[pl.key] = pl
-        pl.options = this.lookups.filter(lu => lu.parentId === pl.id)
-        pl.options.forEach(o => (this.keyToId[`${pl.key}.${o.key}`] = o.id))
-        pl.options.forEach(o => (this.idToList[o.id] = pl))
-      })
-
-      // unit conversions
       this.convert = {}
       unitScalings.forEach(scaling => (this.convert[scaling.unitType] = scaling.multiplier))
       return true
@@ -166,11 +137,11 @@ export class BizService {
     localStorage.setItem("profile", JSON.stringify(profile))
     await this.preloadData(profile)
     this.store.profile$.next(profile)
-    console.log("Columns", this.columns)
-    console.log("idToList", this.idToList)
   }
 
   // #endregion
+
+  reserveBarcode = async () => this.reserveBarcodes(1)
 
   // reserveBarcodes = (count: number = 1) => this.get<string>(`reserveBarcode/${count}`);
   async reserveBarcodes(count = 1): Promise<string> {
@@ -218,6 +189,20 @@ export class BizService {
     this.loadPicklists()
   }
 
+  /*
+  activityType
+  tasks: [
+	  {
+		  taskType
+		  intent
+	  }
+  ]
+
+  */
+
+  async deleteLocation(location: Location) {
+    this.pyramid.delete(`locations/${location.barcode}`)
+  }
 
   // load container + wells + wellContents
   // scope: container, well, content

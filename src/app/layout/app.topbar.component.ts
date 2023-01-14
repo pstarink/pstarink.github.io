@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { BizService } from '@app/services'
+import { BizService, StoreService } from '@app/services'
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 
@@ -16,6 +16,7 @@ export class AppTopbarComponent {
   constructor(
     public layoutService: LayoutService,
     public el: ElementRef,
+    public store: StoreService,
     public biz: BizService) { }
 
 

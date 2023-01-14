@@ -47,6 +47,12 @@ export class DashComponent implements OnInit {
           link: "/storage"
         },
         {
+          title: "Storage",
+          description: "Manage the storage hierarchy",
+          icon: "inventory_2",
+          link: "/manage-storage"
+        },
+        {
           title: "Recipes",
           description: "Manage recipes and consumables",
           icon: "blender",
@@ -55,7 +61,7 @@ export class DashComponent implements OnInit {
         {
           title: "Containers",
           description: "Browse containers and content",
-          icon: "inventory_2",
+          icon: "view_compact",
           link: "/containers"
         },
       ]

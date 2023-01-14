@@ -1,4 +1,4 @@
-import { BaseEntity } from "."
+  import { BaseEntity } from "."
 
 export class ContainerModel extends BaseEntity {
   static readonly tableName = "ContainerModels"

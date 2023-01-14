@@ -8,13 +8,39 @@ import { TreeTable } from 'primeng/treetable'
 import { NotifyService } from '@app/components'
 import { StoreService } from '@app/services/store.service'
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
+import { animate, style, transition, trigger } from '@angular/animations'
+import { scaleInOutAnimation } from '@app/animations'
 
 @UntilDestroy()
 @Component({
   selector: 'lookups',
   templateUrl: './manage-lookups.component.html',
   styleUrls: ['./manage-lookups.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
+  animations: [
+    scaleInOutAnimation,
+    trigger("grow", [
+      // Note the trigger name
+      transition(":enter", [
+        // :enter is alias to 'void => *'
+        style({ height: "0", overflow: "hidden" }),
+        animate(500, style({ height: "*" }))
+      ]),
+      transition(":leave", [
+        // :leave is alias to '* => void'
+        animate(500, style({ height: 0, overflow: "hidden" }))
+      ])
+    ]),
+    trigger("fade", [
+      transition(":enter", [
+        style({ opacity: 0 }),
+        animate(250, style({ opacity: 1 }))
+      ]),
+      transition(":leave", [
+        animate(250, style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class ManageLookupsComponent implements OnInit {
   profile: Profile = null
@@ -23,11 +49,14 @@ export class ManageLookupsComponent implements OnInit {
   nodes: TreeNode[] = []
   tree: TreeNode[] = []
   selectedNode: TreeNode = {}
+  previousNode: TreeNode = null
   lookup: Lookup = null
   cols: any[]
   items: MenuItem[]
   flatTree: TreeNode[] = []   // flat list of tree nodes
   treeState: TreeNode[] = []  // tree state, list of expanded nodes
+
+  isEditing = false
 
   containerDefs: ContainerModel[] = []
 
@@ -94,6 +123,21 @@ export class ManageLookupsComponent implements OnInit {
     this.containerDefs = await this.pyramid.list<ContainerModel>("ContainerModels")
   }
 
+  get title() {
+    const l = this.model._lookup
+    const p = this.model._parent
+    if (p || l) {
+      if (!this.isOption) return `${this.group} : ${l.name}`
+      return `${p.name} . ${l.name}`
+    } else
+      return ""
+  }
+
+  get group() {
+    let l: Lookup = this.isOption ? this.model._parent : this.model._lookup
+    return (l.key.includes(':')) ? l.key.split(':')[0] : ""
+  }
+
   compare(obj1, obj2): boolean {
     let same = true
     Object.getOwnPropertyNames(obj1).filter(name => name[0] != "_").forEach(prop => {
@@ -138,16 +182,28 @@ export class ManageLookupsComponent implements OnInit {
   // isItem
 
 
-  lookupSelect(event) {
-    this.msg.add({ severity: 'info', summary: 'Node Selected', detail: event.node.label })
+  async lookupSelect(event) {
+    if (this.selectedNode == this.previousNode) return
+    if (this.isEditing && this.changed) {
+      const ans = await this.ns.confirm("Discard Changes", "There are usaved changes. Do you want to continue?", { acceptText: "Yes" })
+      if (!ans) {
+        this.selectedNode = this.previousNode
+        return
+      }
+    }
+    this.previousNode = this.selectedNode
+    this.isEditing = false
+    
+    // this.msg.add({ severity: 'info', summary: 'Node Selected', detail: event.node.label })
     const lookup = event.node.data as Lookup
-    const parent = this.biz.idToLookup[lookup.parentId]
+    const parent = this.picklists.lookupById(lookup.parentId)
     this.def = this.containerDefs.find(def => def.containerType === lookup.id)
     this.isOption = (parent != null)
     const parts = (parent?.key || lookup.key).split(":") ?? [null]
     this.model = []
     this.model = {
       _lookup: lookup,
+      _parent: parent,
       group: parts.length > 1 ? parts[0] : null,
       picklist: parts[parts.length - 1],
       option: parent ? lookup.key : null,
@@ -159,7 +215,7 @@ export class ManageLookupsComponent implements OnInit {
     if (this.def) {
       this.model.wellRows = this.def.wellRows
       this.model.wellCols = this.def.wellCols
-      this.model.wellVolume = [ this.def.wellVolume, this.def.unitType ]
+      this.model.wellVolume = [this.def.wellVolume, this.def.unitType]
     }
 
     this.lookup = lookup
@@ -168,9 +224,6 @@ export class ManageLookupsComponent implements OnInit {
     this.changed = false
   }
 
-  lookupUnselect(event) {
-    this.msg.add({ severity: 'info', summary: 'Node Unselected', detail: event.node.label })
-  }
 
 
 
@@ -342,5 +395,13 @@ export class ManageLookupsComponent implements OnInit {
       this.rotateText = "Expand"
       this.rotateIcon = "pi pi-angle-double-down"
     }
+  }
+
+  edit = () => this.isEditing = !this.isEditing
+
+  cancel = () => this.isEditing = false
+
+  accept() {
+
   }
 }

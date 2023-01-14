@@ -16,7 +16,7 @@ import * as _ from "lodash"
 // idByKey
 // options
 //
-// list = key{.subkey}{|option}
+// list = {group:}key{.option}
 // spec = (list|number){,(list|number)}*
 //
 // Role || Role|Admin
@@ -29,19 +29,6 @@ export class Picklists {
   lists: Lookup[]                                     // list of picklist definitions
   name: { [id: number]: string } = {}                 // id > name dictionary
 
-  // id to lookup
-  // id to key
-  // id to path
-  // path to id
-  keyToId: { [key: string | number]: number | undefined }
-  // get picklist by key
-  keyToList: { [key: string]: Lookup }
-  // get lookup by id
-  idToLookup: { [id: number]: Lookup }
-  // get picklist by option id
-  idToList: { [id: number]: Lookup }
-
-
   constructor(lookups: Lookup[]) {
     this.lookups = lookups.map(lookup => new Lookup(lookup))
     this.lookups.forEach((lu) => (this.name[lu.id] = lu.name))
@@ -50,34 +37,15 @@ export class Picklists {
       list.allOptions = this.lookups.filter(lookup => lookup.parentId == list.id)
       list.options = list.allOptions.filter(option => option.isEnabled)
     })
-
-    // new, quicker lookup tables
-
-    // id to lookup
-    this.idToLookup = {}
-    this.lookups.forEach(lu => this.idToLookup[lu.id] = lu)
-
-    // lids and picklists
-    this.keyToId = {}
-    this.keyToList = {}
-    this.idToList = {}
-    const lists = this.lookups.filter(lu => !lu.parentId)
-    lists.forEach((pl) => {
-        this.keyToId[pl.key] = pl.id
-        this.keyToList[pl.key] = pl
-        pl.options = this.lookups.filter(lu => lu.parentId === pl.id)
-        pl.options.forEach(o => (this.keyToId[`${pl.key}.${o.key}`] = o.id))
-        pl.options.forEach(o => (this.idToList[o.id] = pl))
-      })
   }
 
   // return the lookup by id, undefined otherwise
-  private lookupById(id: number): Lookup {
+  lookupById(id: number): Lookup {
     return this.lookups.find(lookup => lookup.id === id)
   }
 
   // return first lookup by key, undefined otherwise
-  private lookupByKey(key: string): Lookup {
+  lookupByKey(key: string): Lookup {
     const parts = key.split(".")
     if (parts.length == 1)
       return this.lookups.find(lookup => lookup.key === key)

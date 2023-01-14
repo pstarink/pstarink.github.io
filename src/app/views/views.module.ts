@@ -40,6 +40,10 @@ const routes: Routes = [
     loadChildren: () => import("./storage/storage.module").then(m => m.StorageModule)
   },
   {
+    path: "manage-storage",
+    loadChildren: () => import("./manage-storage/manage-storage.module").then(m => m.ManageStorageModule)
+  },
+  {
     path: "users",
     loadChildren: () => import("./users/users.module").then(m => m.UsersModule)
   },

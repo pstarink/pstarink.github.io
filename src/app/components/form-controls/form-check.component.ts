@@ -12,6 +12,7 @@ import { FormBaseComponent } from './form-base.component'
       [falseValue]=0
       [trueValue]=1
       [label]="label"
+      [disabled]="disabled"
       [(ngModel)]="_value"
       (onChange)="onChange($event.checked)"
       (blur)="onTouched()">

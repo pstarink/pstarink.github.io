@@ -8,6 +8,8 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger'
 import { DialogService } from 'primeng/dynamicdialog'
 import { NotifyService } from './components'
 import { BizService } from './services'
+import { HTTP_INTERCEPTORS } from '@angular/common/http'
+import { NgHttpLoaderModule } from 'ng-http-loader'
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { BizService } from './services'
       disableFileDetails: true,
       timestampFormat: "ss.SSS"
     }),
+    NgHttpLoaderModule.forRoot()
   ],
   providers: [
     {
@@ -36,6 +39,7 @@ import { BizService } from './services'
       deps: [BizService],
       multi: true
     },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent]
