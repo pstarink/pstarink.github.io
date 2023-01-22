@@ -1,0 +1,123 @@
+.primary {
+    filter: invert(25%) sepia(22%) saturate(2894%) hue-rotate(344deg) brightness(92%) contrast(92%);
+}
+
+.primary-light {
+    filter: invert(51%) sepia(100%) saturate(312%) hue-rotate(343deg) brightness(87%) contrast(88%);
+}
+
+.primary-dark {
+    filter: invert(11%) sepia(39%) saturate(3306%) hue-rotate(354deg) brightness(97%) contrast(97%);
+}
+
+.accent {
+    filter: invert(38%) sepia(70%) saturate(576%) hue-rotate(327deg)
+        brightness(90%) contrast(94%);
+}
+
+.accent-light {
+    filter: invert(47%) sepia(97%) saturate(1627%) hue-rotate(12deg)
+        brightness(101%) contrast(98%);
+}
+
+.gray {
+    filter: invert(98%) sepia(85%) saturate(163%) hue-rotate(186deg)
+        brightness(112%) contrast(88%);
+}
+
+
+// text colors
+
+.text-dark {
+    color: #4e342e;
+}
+
+.text-light {
+    color: #cb7e49;
+}
+
+
+// brown shades
+
+.text-brown-50 {
+  color: #efebe9;
+}
+
+.text-brown-100 {
+  color: #d7ccc8;
+}
+
+.text-brown-200 {
+  color: #bcaaa4;
+}
+
+.text-brown-300 {
+  color: #a1887f;
+}
+
+.text-brown-400 {
+  color: #8d6e63;
+}
+
+.text-brown-500 {
+  color: #795548;
+}
+
+.text-brown-600 {
+  color: #6d4c41;
+}
+
+.text-brown-700 {
+  color: #5d4037;
+}
+
+.text-brown-800 {
+  color: #4e342e;
+}
+
+.text-brown-900 {
+  color: #3e2723;
+}
+
+
+// tan shades
+
+.text-tan-50 {
+  color: #f6eae2;
+}
+
+.text-tan-100 {
+  color: #eccfbc;
+}
+
+.text-tan-200 {
+  color: #e1b496;
+}
+
+.text-tan-300 {
+  color: #d69970;
+}
+
+.text-tan-400 {
+  color: #cb7e49;
+}
+
+.text-tan-500 {
+  color: #b16632;
+}
+
+.text-tan-600 {
+  color: #8b5027;
+}
+
+.text-tan-700 {
+  color: #653a1c;
+}
+
+.text-tan-800 {
+  color: #3f2412;
+}
+
+.text-tan-900 {
+  color: #190e07;
+}

@@ -1,0 +1,95 @@
+{
+    "title": "Fill the form",
+    "controls": [
+        {
+            "key": "firstName",
+            "name": "First Name",
+            "type": "text",
+            "icon": "user",
+            "validators": {
+                "required": true,
+                "minLength": 10
+            }
+        },
+
+        {
+            "key": "lastName",
+            "name": "Last Name",
+            "icon": "user",
+            "type": "text"
+        },
+
+        {
+            "key": "S1",
+            "name": "Select I",
+            "type": "select",
+            "options": ["Yes", "No", "Maybe", "Private"]
+        },
+
+        {
+            "key": "S2",
+            "name": "Select II",
+            "type": "select",
+            "options": [
+                { "id": 11, "name": "Male" },
+                { "id": 13, "name": "Female" },
+                { "id": 17, "name": "Private" }
+            ]
+        },
+        {
+            "key": "S3",
+            "name": "Select III",
+            "type": "select",
+            "multi": true,
+            "options": {
+                "name": "Lookup III",
+                "options": [
+                    { "id": 23, "name": "Orange" },
+                    { "id": 29, "name": "Mandarin" },
+                    { "id": 31, "name": "Lemon" },
+                    { "id": 37, "name": "Grapefruit" },
+                    { "id": 38, "name": "Lime" }
+                ]
+            }
+        },
+
+        {
+            "key": "S4",
+            "name": "Lookup[0]",
+            "type": "select",
+            "options": [
+                {
+                    "name": "Select IV",
+                    "options": [
+                        { "id": 41, "name": "Bear" },
+                        { "id": 47, "name": "Moose" },
+                        { "id": 53, "name": "Tiger" }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "S5",
+            "name": "Lookup[]",
+            "type": "select",
+            "options": [
+                {
+                    "name": "Select V.1",
+                    "options": [
+                        { "id": 59, "name": "Rose" },
+                        { "id": 61, "name": "Lilly" },
+                        { "id": 67, "name": "Tulip" }
+                    ]
+                },
+                {
+                    "name": "Select V.2",
+                    "options": [
+                        { "id": 71, "name": "Brown" },
+                        { "id": 73, "name": "Yellow" },
+                        { "id": 79, "name": "Green" }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -15,7 +15,7 @@ const routes: Routes = [
     component: SandboxComponent,
     canActivate: [AuthGuard]
   }
-];
+]
 
 @NgModule({
   imports: [

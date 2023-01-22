@@ -1,0 +1,99 @@
+{
+    "step": {
+        "version": 1.0,
+        "name": "Test form",
+        "sections": [
+            {
+                "title": "TEXT",
+                "groups": [
+                    {
+                        "components": [
+                            {
+                                "type": "text",
+                                "key": "fullName",
+                                "label": "Full name",
+                                "icon": "user",
+                                "prompt": "enter your full name",
+                                "next": "address",
+                                "submit": null,
+                                "validators": {
+                                    "required": true,
+                                    "minLength": 4
+                                },
+                                "verify": {}
+                            },
+                            {
+                                "type": "text",
+                                "key": "address",
+                                "label": "Address",
+                                "icon": "user",
+                                "prompt": "enter your address",
+                                "next": null,
+                                "submit": null,
+                                "rows": 4,
+                                "validators": {
+                                    "required": true
+                                },
+                                "verify": {}
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Number",
+                "groups": [
+                    {
+                        "components": [
+                            {
+                                "type": "number",
+                                "key": "updown",
+                                "label": "Amount",
+                                "prompt": "enter amount",
+                                "next": null,
+                                "submit": null,
+                                "validators": {
+                                    "required": true,
+                                    "min": 18,
+                                    "max": 65
+                                },
+                                "verify": {}
+                            },
+                            {
+                                "type": "number",
+                                "key": "price",
+                                "label": "Price",
+                                "prompt": "enter price",
+                                "decimals": 2,
+                                "next": null,
+                                "submit": null,
+                                "validators": {
+                                    "required": true,
+                                    "min": 18,
+                                    "max": 65
+                                },
+                                "verify": {}
+                            },
+                            {
+                                "type": "number",
+                                "key": "transfer",
+                                "label": "Transfer Amount",
+                                "prompt": "enter amount",
+                                "decimals": 2,
+                                "units": "Units.Volume",
+                                "next": null,
+                                "submit": null,
+                                "validators": {
+                                    "required": true,
+                                    "min": 18,
+                                    "max": 65
+                                },
+                                "verify": {}
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
